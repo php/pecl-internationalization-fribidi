@@ -13,7 +13,7 @@
   </maintainers>
   <description>
     A PHP frontend to the FriBidi library: an implementation of the unicode Bidi algorithm,
-	provides means for handling right-to-left text.
+    provides means for handling right-to-left text.
   </description>
   <license>PHP</license>
   <release>
@@ -25,8 +25,8 @@
     </notes>
     <filelist>
       <file role="src" name="config.m4"/>
-      <file role="src" name="mailparse.c"/>
-      <file role="src" name="php_mailparse.h"/>
+      <file role="src" name="fribidi.c"/>
+      <file role="src" name="php_fribidi.h"/>
       <file role="doc" name="CREDITS"/>
       <file role="doc" name="README"/>
       <file role="test" name="tests/001.phpt"/>
