@@ -24,7 +24,7 @@ Usage
                  d) FRIBIDI_CHARSET_CP1255     (Hebrew/Yiddish)
                  e) FRIBIDI_CHARSET_CP1256     (Arabic)
                  f) FRIBIDI_CHARSET_ISIRI_3342 (Persian)
-                 g) FRIBIDI_CHARSET_CAP_RTL - Used for test purposes, will treat CAPS as non-English letetrs
+                 g) FRIBIDI_CHARSET_CAP_RTL - Used for test purposes, will treat CAPS as non-English letters
 
 Note: Currently, FriBidi supports the above Character Codes alone. 
 
