@@ -32,7 +32,7 @@
 #include <fribidi/fribidi.h>
 
 /* The fribidi guys dont believe in BC */
-#ifndef FRIBIDI_CHARSET_UTF8
+#ifndef FRIBIDI_MICRO_VERSION_STR
 #define FRIBIDI_CHARSET_UTF8                FRIBIDI_CHAR_SET_UTF8
 #define FRIBIDI_CHARSET_ISO8859_6           FRIBIDI_CHAR_SET_ISO8859_6
 #define FRIBIDI_CHARSET_ISO8859_8           FRIBIDI_CHAR_SET_ISO8859_8
