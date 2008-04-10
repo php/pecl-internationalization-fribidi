@@ -26,6 +26,8 @@
 extern zend_module_entry fribidi_module_entry;
 #define phpext_fribidi_ptr &fribidi_module_entry
 
+#define PHP_FRIBIDI_VERSION "1.0.1-dev"
+
 #ifdef PHP_WIN32
 #define PHP_FRIBIDI_API __declspec(dllexport)
 #else
