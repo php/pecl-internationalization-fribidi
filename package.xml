@@ -1,36 +1,57 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<!DOCTYPE package SYSTEM "../../../php4/pear/package.dtd">
-<package>
-  <name>fribidi</name>
-  <summary>Implementation of the Unicode BiDi algorithm</summary>
-  <maintainers>
-    <maintainer>
-      <user>tal</user>
-      <name>Tal Peer</name>
-      <email>tal@php.net</email>
-      <role>lead</role>
-    </maintainer>
-  </maintainers>
-  <description>
-    A PHP frontend to the FriBidi library: an implementation of the unicode Bidi algorithm,
-    provides means for handling right-to-left text.
-  </description>
-  <license>PHP</license>
-  <release>
-    <state>stable</state>
-    <version>1.0</version>
-    <date>2003-03-08</date>
-    <notes>
-      Initial release.
-    </notes>
-    <filelist>
-      <file role="src" name="config.m4"/>
-      <file role="src" name="fribidi.c"/>
-      <file role="src" name="php_fribidi.h"/>
-      <file role="doc" name="CREDITS"/>
-      <file role="doc" name="README"/>
-      <file role="test" name="tests/001.phpt"/>
-	  <file role="test" name="tests/002.phpt"/>
-    </filelist>
-  </release>
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
+ <name>fribidi</name>
+ <channel>pecl.php.net</channel>
+ <summary>Implementation of the Unicode BiDi algorithm</summary>
+ <description>A PHP frontend to the FriBidi library: an implementation of the unicode Bidi algorithm,
+provides means for handling right-to-left text.
+ </description>
+ <lead>
+  <name>Tal Peer</name>
+  <user>tal</user>
+  <email>tal@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2009-11-05</date>
+ <time>17:57:47</time>
+ <version>
+  <release>1.0</release>
+  <api>1.0</api>
+ </version>
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+ <license uri="http://www.php.net/license">PHP</license>
+ <notes>
+Initial release.
+ </notes>
+ <contents>
+  <dir name="/">
+   <dir name="tests">
+    <file name="001.phpt" role="test" />
+    <file name="002.phpt" role="test" />
+   </dir> <!-- //tests -->
+   <file name="config.m4" role="src" />
+   <file name="CREDITS" role="doc" />
+   <file name="fribidi.c" role="src" />
+   <file name="php_fribidi.h" role="src" />
+   <file name="README" role="doc" />
+  </dir> <!-- / -->
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>4.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <providesextension>fribidi</providesextension>
+ <extsrcrelease />
 </package>
