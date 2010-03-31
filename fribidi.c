@@ -42,7 +42,7 @@
 #define FRIBIDI_CHARSET_CAP_RTL             FRIBIDI_CHAR_SET_CAP_RTL
 #endif
 
-function_entry fribidi_functions[] = {
+zend_function_entry fribidi_functions[] = {
 	PHP_FE(fribidi_log2vis,	     NULL)
 	PHP_FE(fribidi_charset_info, NULL)
 	PHP_FE(fribidi_get_charsets, NULL)
