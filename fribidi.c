@@ -2,7 +2,7 @@
    +----------------------------------------------------------------------+
    | PHP Version 4                                                        |
    +----------------------------------------------------------------------+
-   | Copyright (c) 1997-2003 The PHP Group                                |
+   | Copyright (c) 1997-2003,2013 The PHP Group                           |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -13,7 +13,8 @@
    | license@php.net so we can mail you a copy immediately.               |
    +----------------------------------------------------------------------+
    | Authors: Onn Ben-Zvi <onnb@mercury.co.il>                            |
-   |          Tal Peer <tal@php.net>
+   |          Tal Peer <tal@php.net>                                      |
+   |          Behnam Esfahbod <behnam@php.net>                          |
    +----------------------------------------------------------------------+
  */
 
@@ -29,7 +30,7 @@
 #if HAVE_FRIBIDI
 
 #include "ext/standard/info.h"
-#include <fribidi/fribidi.h>
+#include <fribidi.h>
 
 /* The fribidi guys dont believe in BC */
 #ifndef FRIBIDI_MICRO_VERSION_STR
@@ -38,7 +39,6 @@
 #define FRIBIDI_CHARSET_ISO8859_8           FRIBIDI_CHAR_SET_ISO8859_8
 #define FRIBIDI_CHARSET_CP1255              FRIBIDI_CHAR_SET_CP1255
 #define FRIBIDI_CHARSET_CP1256              FRIBIDI_CHAR_SET_CP1256
-#define FRIBIDI_CHARSET_ISIRI_3342          FRIBIDI_CHAR_SET_ISIRI_3342
 #define FRIBIDI_CHARSET_CAP_RTL             FRIBIDI_CHAR_SET_CAP_RTL
 #endif
 
@@ -76,14 +76,13 @@ PHP_MINIT_FUNCTION(fribidi)
 	REGISTER_LONG_CONSTANT("FRIBIDI_CHARSET_8859_8", FRIBIDI_CHARSET_ISO8859_8, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("FRIBIDI_CHARSET_CP1255", FRIBIDI_CHARSET_CP1255, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("FRIBIDI_CHARSET_CP1256", FRIBIDI_CHARSET_CP1256, CONST_CS | CONST_PERSISTENT);
-	REGISTER_LONG_CONSTANT("FRIBIDI_CHARSET_ISIRI_3342", FRIBIDI_CHARSET_ISIRI_3342, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("FRIBIDI_CHARSET_CAP_RTL", FRIBIDI_CHARSET_CAP_RTL, CONST_CS | CONST_PERSISTENT);
-	
+
 	/* Directions */
 	REGISTER_LONG_CONSTANT("FRIBIDI_AUTO", FRIBIDI_TYPE_ON, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("FRIBIDI_LTR", FRIBIDI_TYPE_LTR, CONST_CS | CONST_PERSISTENT);
 	REGISTER_LONG_CONSTANT("FRIBIDI_RTL", FRIBIDI_TYPE_RTL, CONST_CS | CONST_PERSISTENT);
-	
+
 	return SUCCESS;
 }
 /* }}} */
@@ -126,13 +125,12 @@ PHP_MINFO_FUNCTION(fribidi)
 |              FRIBIDI_CHARSET_8859_8                        |
 |              FRIBIDI_CHARSET_CP1255                        |
 |              FRIBIDI_CHARSET_CP1256                        |
-|              FRIBIDI_CHARSET_ISIRI_3342                    |
 |              FRIBIDI_CHARSET_CAP_RTL                       |
 |                                                            |
 | Output: on success: The visual string.                     |
 |         on failure: FALSE                                  |
 +------------------------------------------------------------+
-*/           
+*/
 
 /* {{{ proto string fribidi_log2vis(string logical_str, long direction, long charset)
    Convert a logical string to a visual one */
@@ -142,7 +140,7 @@ PHP_FUNCTION(fribidi_log2vis)
 	FriBidiChar *u_logical_str, *u_visual_str;  /* unicode strings .... */
 	char *in_string, *out_string;
 	int len, alloc_len;
-	FriBidiCharType base_dir;
+	FriBidiParType  base_dir;
 	FriBidiStrIndex *position_L_to_V_list;
 	FriBidiStrIndex *position_V_to_L_list;
 	FriBidiLevel    *embedding_level_list;
@@ -155,7 +153,7 @@ PHP_FUNCTION(fribidi_log2vis)
 	/* convert argument types */
 	convert_to_string_ex(logical_str);
 	convert_to_long_ex(charset);
-	
+
 	if (Z_TYPE_PP(direction) == IS_LONG) {
 		convert_to_long_ex(direction);
 		base_dir = Z_LVAL_PP(direction);
@@ -168,7 +166,7 @@ PHP_FUNCTION(fribidi_log2vis)
 		} else {
 			base_dir = FRIBIDI_TYPE_ON;
 		}
-			
+
 		php_error_docref(NULL TSRMLS_CC, E_NOTICE, "The use of strings to mark the base direction is deprecated, please use the FRIBIDI_LTR, FRIBIDI_RTL and FRIBIDI_AUTO constants");
 	}
 
@@ -194,7 +192,6 @@ PHP_FUNCTION(fribidi_log2vis)
 		case FRIBIDI_CHARSET_ISO8859_8:
 		case FRIBIDI_CHARSET_CP1255:
 		case FRIBIDI_CHARSET_CP1256:
-		case FRIBIDI_CHARSET_ISIRI_3342:
 		case FRIBIDI_CHARSET_CAP_RTL:
 			len = fribidi_charset_to_unicode(Z_LVAL_PP(charset), in_string, len, u_logical_str);
 			break;
@@ -208,17 +205,13 @@ PHP_FUNCTION(fribidi_log2vis)
 			efree(in_string);
 			RETURN_FALSE;
 	}
-	
+
 	/* visualize the logical.... */
-	
+
 	out_string = (char *) emalloc(sizeof(char)*alloc_len);
 
-#if FRIBIDI_MAJOR_VERSION == 0 && FRIBIDI_MINOR_VERSION <= 10
 	fribidi_log2vis(u_logical_str, len, &base_dir, u_visual_str, position_L_to_V_list, position_V_to_L_list, embedding_level_list);
-#else
-	fribidi_log2vis(NULL, u_logical_str, len, &base_dir, u_visual_str, position_L_to_V_list, position_V_to_L_list, embedding_level_list);
-#endif
-	
+
 	/* convert back to original char set */
 	switch(Z_LVAL_PP(charset)) {
 		case FRIBIDI_CHARSET_UTF8:
@@ -226,10 +219,9 @@ PHP_FUNCTION(fribidi_log2vis)
 		case FRIBIDI_CHARSET_ISO8859_8:
 		case FRIBIDI_CHARSET_CP1255:
 		case FRIBIDI_CHARSET_CP1256:
-		case FRIBIDI_CHARSET_ISIRI_3342:
 		case FRIBIDI_CHARSET_CAP_RTL:
 			fribidi_unicode_to_charset(Z_LVAL_PP(charset), u_visual_str, len, out_string);
-			break;									
+			break;
 		default:
 			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown charset");
 			efree(u_logical_str);
@@ -260,7 +252,7 @@ PHP_FUNCTION(fribidi_charset_info)
 {
 	long charset;
 	char *name, *title, *desc;
-	
+
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &charset) == FAILURE) {
 		return;
 	}
@@ -271,14 +263,13 @@ PHP_FUNCTION(fribidi_charset_info)
 		case FRIBIDI_CHARSET_ISO8859_8:
 		case FRIBIDI_CHARSET_CP1255:
 		case FRIBIDI_CHARSET_CP1256:
-		case FRIBIDI_CHARSET_ISIRI_3342:
 		case FRIBIDI_CHARSET_CAP_RTL:
 			array_init(return_value);
-			
-			name  = fribidi_char_set_name(charset);
-			title = fribidi_char_set_title(charset);
-			desc  = fribidi_char_set_desc(charset);
-		   	
+
+			name  = (char *)fribidi_char_set_name(charset);
+			title = (char *)fribidi_char_set_title(charset);
+			desc  = (char *)fribidi_char_set_desc(charset);
+
 			if (name) {
 				add_assoc_string_ex(return_value, "name", sizeof("name"), name, 1);
 			}
@@ -309,7 +300,6 @@ PHP_FUNCTION(fribidi_get_charsets)
 	add_index_string(return_value, FRIBIDI_CHARSET_ISO8859_8, "FRIBIDI_CHARSET_8859_8", 1);
 	add_index_string(return_value, FRIBIDI_CHARSET_CP1255, "FRIBIDI_CHARSET_CP1255", 1);
 	add_index_string(return_value, FRIBIDI_CHARSET_CP1256, "FRIBIDI_CHARSET_CP1256", 1);
-	add_index_string(return_value, FRIBIDI_CHARSET_ISIRI_3342, "FRIBIDI_CHARSET_ISIRI_3342", 1);
 }
 /* }}} */
 

@@ -13,7 +13,6 @@ FriBidi charsets
 	echo FRIBIDI_CHARSET_UTF8."\n";
 	echo FRIBIDI_CHARSET_CP1255."\n";
 	echo FRIBIDI_CHARSET_CP1256."\n";
-	echo FRIBIDI_CHARSET_ISIRI_3342."\n";
 	echo FRIBIDI_CHARSET_CAP_RTL."\n";
 	
 	$charsets = fribidi_get_charsets();
@@ -28,7 +27,6 @@ FriBidi charsets
 1
 5
 6
-7
 2
 Array
 (
@@ -71,7 +69,7 @@ CapRTL's character types:
   * 0x50  P RTL   * 0x51  Q RTL   * 0x52  R RTL   * 0x53  S RTL 
   * 0x54  T RTL   * 0x55  U RTL   * 0x56  V RTL   * 0x57  W RTL 
   * 0x58  X RTL   * 0x59  Y RTL   * 0x5a  Z RTL   * 0x5b  [ ON  
-  * 0x5c  \ BS    * 0x5d  ] ON    * 0x5e  ^ ON    * 0x5f  _ ON  
+  * 0x5c  \ BS    * 0x5d  ] ON    * 0x5e  ^ BN    * 0x5f  _ ON  
   * 0x60  ` NSM   * 0x61  a LTR   * 0x62  b LTR   * 0x63  c LTR 
   * 0x64  d LTR   * 0x65  e LTR   * 0x66  f LTR   * 0x67  g LTR 
   * 0x68  h LTR   * 0x69  i LTR   * 0x6a  j LTR   * 0x6b  k LTR 
@@ -97,25 +95,20 @@ Escape sequences:
 Array
 (
     [name] => ISO8859-6
-    [title] => ISO 8859-6 (Arabic)
+    [title] => ISO8859-6 (Arabic)
 )
 Array
 (
     [name] => ISO8859-8
-    [title] => ISO 8859-8 (Hebrew)
+    [title] => ISO8859-8 (Hebrew)
 )
 Array
 (
     [name] => CP1255
-    [title] => CP1255 (Hebrew/Yiddish)
+    [title] => CP1255 (MS Hebrew/Yiddish)
 )
 Array
 (
     [name] => CP1256
-    [title] => CP1256 (MS-Arabic)
-)
-Array
-(
-    [name] => ISIRI-3342
-    [title] => ISIRI 3342 (Persian)
+    [title] => CP1256 (MS Arabic)
 )

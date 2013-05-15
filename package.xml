@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
-http://pear.php.net/dtd/tasks-1.0.xsd
-http://pear.php.net/dtd/package-2.0
-http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>fribidi</name>
  <channel>pecl.php.net</channel>
- <summary>Implementation of the Unicode BiDi algorithm</summary>
- <description>A PHP frontend to the FriBidi library: an implementation of the unicode Bidi algorithm,
+ <summary>Implementation of the Unicode Bidirectional Algorithm (bidi)</summary>
+ <description>A PHP frontend to the GNU FriBidi library: an implementation of the unicode Bidi algorithm,
 provides means for handling right-to-left text.
  </description>
  <lead>
@@ -15,10 +12,16 @@ provides means for handling right-to-left text.
   <email>tal@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-11-05</date>
- <time>17:57:47</time>
+ <lead>
+  <name>Behnam Esfahbod</name>
+  <user>behnam</user>
+  <email>behnam@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2013-03-13</date>
+ <time>02:33:13</time>
  <version>
-  <release>1.0</release>
+  <release>1.1</release>
   <api>1.0</api>
  </version>
  <stability>
@@ -26,9 +29,7 @@ provides means for handling right-to-left text.
   <api>stable</api>
  </stability>
  <license uri="http://www.php.net/license">PHP</license>
- <notes>
-Initial release.
- </notes>
+ <notes>Requires GNU FriBidi version 0.19.1 or later.</notes>
  <contents>
   <dir name="/">
    <dir name="tests">

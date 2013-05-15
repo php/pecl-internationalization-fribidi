@@ -1,16 +1,25 @@
+
+PECL Fribidi
+============
+
+PHP Extension for GNU FriBidi, an implementation of the Unicode Bidirectional Algorithm (bidi)
+
+
 Purpose
-=======
-         
+-------
+
 This extension is basically a wrapper for the FriBidi implementation
-of the Unicode Bidi algorithm. The need for such an algorithm rises
-from the bidirectional language usage  done by applications. 
+of the Unicode Bidirectional algorithm. The need for such an algorithm
+rises from the bidirectional language usage  done by applications.
 Arabic/Hebrew embedded within English is such a case.
 
-Usage
-=====
 
- The only function used is fribidi_log2vis (logical [non-reversed] to visual [reversed]).
-     Input: 
+Usage
+-----
+
+The only function used is fribidi_log2vis (logical [non-reversed] to visual [reversed]).
+
+     Input:
             1) The Logical string.
             2) Base direction of application. Possible values:
                  a) FRIBIDI_RTL  - right to left
@@ -23,28 +32,31 @@ Usage
                  c) FRIBIDI_CHARSET_8859_8     (Hebrew)
                  d) FRIBIDI_CHARSET_CP1255     (Hebrew/Yiddish)
                  e) FRIBIDI_CHARSET_CP1256     (Arabic)
-                 f) FRIBIDI_CHARSET_ISIRI_3342 (Persian)
                  g) FRIBIDI_CHARSET_CAP_RTL - Used for test purposes, will treat CAPS as non-English letters
 
-Note: Currently, FriBidi supports the above Character Codes alone. 
+Note: Currently, FriBidi supports the above Character Codes alone.
 
       Output: A Visual string.
 
 
 Compiling
-=========== 
-1) Static - ./configure --with-fribidi=base-directory-of-FriBidi-installation-path 
+---------
+
+1) Static - ./configure --with-fribidi=base-directory-of-FriBidi-installation-path
              (defaults to /usr/local).
 
 2) dl - same, just add shared, to get .... --with-fribidi=shared,base....
-  
-Prerequisites
-=============
-1) FriBidi version 0.10.4 or later must be installed. Latest version can be obtained thru 
-   http://fribidi.sourceforge.net/
 
-Note
-=====
+
+Prerequisites
+-------------
+
+1) FriBidi version 0.19.1 or later must be installed. Latest version can be obtained thru
+   http://fribidi.org/
+
+
+Notes
+-----
 
 The function fribidi_log2vis computes three more arrays which are currently not passed back as output.
 These arrays are:
@@ -52,5 +64,6 @@ These arrays are:
 	2) mapping from the visual to the logical string.
 	3) embedding level of characters as figured out by the FriBidi algorithm.
 
-The extension needs further implementation to support this. 
+The extension needs further implementation to support this.
 p.s. - If you don't understand this, you probably don't need it.
+

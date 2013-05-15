@@ -2,7 +2,7 @@
    +----------------------------------------------------------------------+
    | PHP Version 4                                                        |
    +----------------------------------------------------------------------+
-   | Copyright (c) 1997-2003 The PHP Group                                |
+   | Copyright (c) 1997-2003,2013 The PHP Group                           |
    +----------------------------------------------------------------------+
    | This source file is subject to version 2.02 of the PHP license,      |
    | that is bundled with this package in the file LICENSE, and is        |
@@ -21,12 +21,12 @@
 
 #if HAVE_FRIBIDI
 
-#include <fribidi/fribidi.h>
+#include <fribidi.h>
 
 extern zend_module_entry fribidi_module_entry;
 #define phpext_fribidi_ptr &fribidi_module_entry
 
-#define PHP_FRIBIDI_VERSION "1.0.1-dev"
+#define PHP_FRIBIDI_VERSION "1.1"
 
 #ifdef PHP_WIN32
 #define PHP_FRIBIDI_API __declspec(dllexport)
