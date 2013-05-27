@@ -131,11 +131,10 @@ PHP_MINFO_FUNCTION(fribidi)
 PHP_FUNCTION(fribidi_log2vis)
 {
 	char *logical_str, *visual_str;
-	int logical_str_len, visual_str_len;
+	int  logical_str_len, visual_str_len, ustr_len;
 	long charset, direction;
-	int u_logical_str_len;
 	FriBidiParType base_direction;
-	FriBidiChar *u_logical_str, *u_visual_str;
+	FriBidiChar    *logical_ustr, *visual_ustr;
 
 	// Read and validate parameters
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll", &logical_str, &logical_str_len, &direction, &charset) == FAILURE)
@@ -167,25 +166,25 @@ PHP_FUNCTION(fribidi_log2vis)
 	}
 
 	// Convert input string to FriBidiChar
-	u_logical_str = (FriBidiChar*) emalloc(sizeof(FriBidiChar) * logical_str_len);
+	logical_ustr = (FriBidiChar*) emalloc(sizeof(FriBidiChar) * logical_str_len);
 
-	u_logical_str_len = fribidi_charset_to_unicode(charset, logical_str, logical_str_len, u_logical_str);
+	ustr_len = fribidi_charset_to_unicode(charset, logical_str, logical_str_len, logical_ustr);
 
 	// Visualize the FriBidiChar sequence
 	base_direction = direction;
-	u_visual_str = (FriBidiChar*) emalloc(sizeof(FriBidiChar) * logical_str_len);
+	visual_ustr = (FriBidiChar*) emalloc(sizeof(FriBidiChar) * ustr_len);
 
-	fribidi_log2vis(u_logical_str, u_logical_str_len, &base_direction,
-			u_visual_str, NULL, NULL, NULL);
+	fribidi_log2vis(logical_ustr, ustr_len, &base_direction, visual_ustr, NULL, NULL, NULL);
 
-	efree(u_logical_str);
+	efree(logical_ustr);
 
 	// Convert back from FriBidiLevel to original character set
-	visual_str = (char *) emalloc(sizeof(char) * 4 * u_logical_str_len);
+	visual_str_len = 4 * ustr_len;	// FriBidi doesn't generate UTF-8 chars longer than 4 bytes
+	visual_str = (char *) emalloc(sizeof(char) * visual_str_len);
 
-	visual_str_len = fribidi_unicode_to_charset(charset, u_visual_str, u_logical_str_len, visual_str);
+	visual_str_len = fribidi_unicode_to_charset(charset, visual_ustr, ustr_len, visual_str);
 
-	efree(u_visual_str);
+	efree(visual_ustr);
 
 	// Return the result
 	RETURN_STRINGL(visual_str, visual_str_len, 0);
@@ -197,7 +196,6 @@ PHP_FUNCTION(fribidi_log2vis)
 PHP_FUNCTION(fribidi_charset_info)
 {
 	long charset;
-	char *name, *title, *desc;
 
 	// Read and validate parameters
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &charset) == FAILURE)
@@ -218,16 +216,13 @@ PHP_FUNCTION(fribidi_charset_info)
 
 	// Return the result
 	array_init(return_value);
-
-	name  = (char *)fribidi_char_set_name(charset);
-	add_assoc_string_ex(return_value, "name", sizeof("name"), name, 1);
-
-	title = (char *)fribidi_char_set_title(charset);
-	add_assoc_string_ex(return_value, "title", sizeof("title"), title, 1);
-
-	desc  = (char *)fribidi_char_set_desc(charset);
-	if (desc)
-		add_assoc_string_ex(return_value, "desc", sizeof("desc"), desc, 1);
+	add_assoc_string(return_value, "name",
+			(char *)fribidi_char_set_name(charset), 1);
+	add_assoc_string(return_value, "title",
+			(char *)fribidi_char_set_title(charset), 1);
+	if (fribidi_char_set_desc(charset))
+		add_assoc_string(return_value, "desc",
+				(char *)fribidi_char_set_desc(charset), 1);
 }
 /* }}} */
 

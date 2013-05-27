@@ -16,8 +16,8 @@ fribidi_get_charsets() and fribidi_charset_info()
 	echo FRIBIDI_CHARSET_CAP_RTL."\n";
 
 	$charsets = fribidi_get_charsets();
-	foreach ($charsets as $k => $charset) {
-		print_r(fribidi_charset_info($k));
+	foreach ($charsets as $code => $name) {
+		print_r(fribidi_charset_info($code));
 	}
 ?>
 --EXPECT--
