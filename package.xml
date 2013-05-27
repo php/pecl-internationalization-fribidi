@@ -3,9 +3,9 @@
  <name>fribidi</name>
  <channel>pecl.php.net</channel>
  <summary>Implementation of the Unicode Bidirectional Algorithm (bidi)</summary>
- <description>A PHP frontend to the GNU FriBidi library: an implementation of the unicode Bidi algorithm,
-provides means for handling right-to-left text.
- </description>
+ <description>A PHP frontend to the GNU FriBidi library: an implementation of
+   the Unicode Bidirectional Algorithm (BDA), provides means for handling
+   right-to-left text.</description>
  <lead>
   <name>Tal Peer</name>
   <user>tal</user>
@@ -18,10 +18,10 @@ provides means for handling right-to-left text.
   <email>behnam@php.net</email>
   <active>yes</active>
  </lead>
- <date>2013-03-13</date>
- <time>02:33:13</time>
+ <date>2013-05-27</date>
+ <time>02:15:30</time>
  <version>
-  <release>1.1</release>
+  <release>1.2</release>
   <api>1.0</api>
  </version>
  <stability>
@@ -49,7 +49,7 @@ provides means for handling right-to-left text.
  <dependencies>
   <required>
    <php>
-    <min>4.0.0</min>
+    <min>5.0.0</min>
    </php>
    <pearinstaller>
     <min>1.4.0b1</min>

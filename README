@@ -1,5 +1,5 @@
 
-PECL Fribidi
+PECL FriBidi
 ============
 
 PHP Extension for GNU FriBidi, an implementation of the Unicode Bidirectional Algorithm (bidi)
@@ -8,7 +8,7 @@ PHP Extension for GNU FriBidi, an implementation of the Unicode Bidirectional Al
 Purpose
 -------
 
-This extension is basically a wrapper for the FriBidi implementation
+This extension is basically a wrapper for the GNU FriBidi implementation
 of the Unicode Bidirectional algorithm. The need for such an algorithm
 rises from the bidirectional language usage  done by applications.
 Arabic/Hebrew embedded within English is such a case.
@@ -22,21 +22,22 @@ The only function used is fribidi_log2vis (logical [non-reversed] to visual [rev
      Input:
             1) The Logical string.
             2) Base direction of application. Possible values:
-                 a) FRIBIDI_RTL  - right to left
-                 b) FRIBIDI_LTR  - left to right
-                 c) FRIBIDI_AUTO - autodetect the base direction
-            3) The char code being used, which can be one of the following
-               constants:
-                 a) FRIBIDI_CHARSET_UTF8       (Unicode)
-                 b) FRIBIDI_CHARSET_8859_6     (Arabic)
-                 c) FRIBIDI_CHARSET_8859_8     (Hebrew)
-                 d) FRIBIDI_CHARSET_CP1255     (Hebrew/Yiddish)
-                 e) FRIBIDI_CHARSET_CP1256     (Arabic)
-                 g) FRIBIDI_CHARSET_CAP_RTL - Used for test purposes, will treat CAPS as non-English letters
+                 * FRIBIDI_AUTO  (autodetect the base direction)
+                 * FRIBIDI_LTR   (left to right
+                 * FRIBIDI_RTL   (right to left)
+                 * FRIBIDI_WLTR  (weak left to right)
+                 * FRIBIDI_WRTL  (weak right to left)
+            3) The char code being used, which can be one of the following constants:
+                 * FRIBIDI_CHARSET_UTF8     (Unicode)
+                 * FRIBIDI_CHARSET_8859_6   (ISO-8859-6 - Arabic)
+                 * FRIBIDI_CHARSET_8859_8   (ISO-8859-8 - Hebrew)
+                 * FRIBIDI_CHARSET_CP1255   (MS Codepage 1255 - Hebrew/Yiddish)
+                 * FRIBIDI_CHARSET_CP1256   (MS Codepage 1256 - Arabic)
+                 * FRIBIDI_CHARSET_CAP_RTL  (Used for test purposes, will treat CAPS as non-English letters)
 
-Note: Currently, FriBidi supports the above Character Codes alone.
+Note: Currently, GNU FriBidi supports the above Character Codes alone.
 
-      Output: A Visual string.
+      Output: The visual string, on success, false, otherwise.
 
 
 Compiling
@@ -51,8 +52,8 @@ Compiling
 Prerequisites
 -------------
 
-1) FriBidi version 0.19.1 or later must be installed. Latest version can be obtained thru
-   http://fribidi.org/
+1) GNU FriBidi version 0.19.1 or later must be installed.
+   Latest version can be obtained thru http://fribidi.org/
 
 
 Notes
@@ -60,9 +61,9 @@ Notes
 
 The function fribidi_log2vis computes three more arrays which are currently not passed back as output.
 These arrays are:
-	1) mapping from the logical to the visual string.
-	2) mapping from the visual to the logical string.
-	3) embedding level of characters as figured out by the FriBidi algorithm.
+    1) mapping from the logical to the visual string.
+    2) mapping from the visual to the logical string.
+    3) embedding level of characters as figured out by the bidi algorithm.
 
 The extension needs further implementation to support this.
 p.s. - If you don't understand this, you probably don't need it.

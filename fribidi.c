@@ -102,7 +102,7 @@ PHP_MINFO_FUNCTION(fribidi)
 /* {{{ internal helper funcations
 */
 
-static inline int
+static inline zend_bool
 _direction_is_validate(direction)
 {
 	switch (direction) {
@@ -124,7 +124,7 @@ _direction_is_validate(direction)
 	} \
 }
 
-static inline int
+static inline zend_bool
 _charset_is_validate(charset)
 {
 	switch (charset) {
