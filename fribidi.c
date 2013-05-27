@@ -111,9 +111,9 @@ _direction_is_validate(direction)
 		case FRIBIDI_PAR_RTL:
 		case FRIBIDI_PAR_WLTR:
 		case FRIBIDI_PAR_WRTL:
-			return TRUE;
+			return 1;
 	}
-	return FALSE;
+	return 0;
 }
 
 #define _validate_direction(direction) \
@@ -134,9 +134,9 @@ _charset_is_validate(charset)
 		case FRIBIDI_CHAR_SET_CP1255:
 		case FRIBIDI_CHAR_SET_CP1256:
 		case FRIBIDI_CHAR_SET_CAP_RTL:
-			return TRUE;
+			return 1;
 	}
-	return FALSE;
+	return 0;
 }
 
 #define _validate_charset(charset) \
@@ -155,24 +155,24 @@ _charset_is_validate(charset)
 | Purpose: convert a logical string to a visual one          |
 | Input: 1) The logical string.                              |
 |        2) Base direction -                                 |
-|             Possible values:                               |
+|           Possible values:                                 |
 |             FRIBIDI_AUTO - autodetected by the Unicode     |
-|                            Bidirection algorithm.          |
+|                            Bidirection Algorithm (UBA).    |
 |             FRIBIDI_LTR  - left to right.                  |
 |             FRIBIDI_RTL  - right to left.                  |
 |             FRIBIDI_WLTR - week left to right.             |
 |             FRIBIDI_WRTL - week right to left.             |
 |        3) Character code being used -                      |
-|             Possible values (i.e., charsets supported)     |
-|              FRIBIDI_CHARSET_UTF8                          |
-|              FRIBIDI_CHARSET_8859_6                        |
-|              FRIBIDI_CHARSET_8859_8                        |
-|              FRIBIDI_CHARSET_CP1255                        |
-|              FRIBIDI_CHARSET_CP1256                        |
-|              FRIBIDI_CHARSET_CAP_RTL                       |
+|           Possible values (i.e., charsets supported)       |
+|             FRIBIDI_CHARSET_UTF8                           |
+|             FRIBIDI_CHARSET_8859_6                         |
+|             FRIBIDI_CHARSET_8859_8                         |
+|             FRIBIDI_CHARSET_CP1255                         |
+|             FRIBIDI_CHARSET_CP1256                         |
+|             FRIBIDI_CHARSET_CAP_RTL                        |
 |                                                            |
 | Output: on success: The visual string.                     |
-|         on failure: FALSE                                  |
+|         on failure: false                                  |
 +------------------------------------------------------------+
 */
 
@@ -181,37 +181,38 @@ _charset_is_validate(charset)
 PHP_FUNCTION(fribidi_log2vis)
 {
 	char *logical_str, *visual_str;
-	int  logical_str_len, visual_str_len, ustr_len;
 	long charset, direction;
+	int  logical_str_len, visual_str_len, ustr_len;
 	FriBidiParType base_direction;
+	FriBidiLevel   status;
 	FriBidiChar    *logical_ustr, *visual_ustr;
 
 	// Read and validate parameters
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll", &logical_str, &logical_str_len, &direction, &charset) == FAILURE)
 		WRONG_PARAM_COUNT;
-
 	_validate_direction(direction);
 	_validate_charset(charset);
 
-	// Convert input string to FriBidiChar
+	// Convert input string to internal Unicode
 	logical_ustr = (FriBidiChar*) emalloc(sizeof(FriBidiChar) * logical_str_len);
-
 	ustr_len = fribidi_charset_to_unicode(charset, logical_str, logical_str_len, logical_ustr);
 
-	// Visualize the FriBidiChar sequence
+	// Visualize the Unicode string
 	base_direction = direction;
 	visual_ustr = (FriBidiChar*) emalloc(sizeof(FriBidiChar) * ustr_len);
-
-	fribidi_log2vis(logical_ustr, ustr_len, &base_direction, visual_ustr, NULL, NULL, NULL);
-
+	status = fribidi_log2vis(logical_ustr, ustr_len, &base_direction, visual_ustr, NULL, NULL, NULL);
 	efree(logical_ustr);
 
-	// Convert back from FriBidiLevel to original character set
+	// Return false if FriBidi failed
+	if (status == 0) {
+		efree(visual_ustr);
+		RETURN_FALSE;
+	}
+
+	// Convert back from internal Unicode to original character set
 	visual_str_len = 4 * ustr_len;	// FriBidi doesn't generate UTF-8 chars longer than 4 bytes
 	visual_str = (char *) emalloc(sizeof(char) * visual_str_len);
-
 	visual_str_len = fribidi_unicode_to_charset(charset, visual_ustr, ustr_len, visual_str);
-
 	efree(visual_ustr);
 
 	// Return the result
@@ -228,7 +229,6 @@ PHP_FUNCTION(fribidi_charset_info)
 	// Read and validate parameters
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &charset) == FAILURE)
 		WRONG_PARAM_COUNT;
-
 	_validate_charset(charset);
 
 	// Return the result
@@ -248,7 +248,6 @@ PHP_FUNCTION(fribidi_charset_info)
 PHP_FUNCTION(fribidi_get_charsets)
 {
 	array_init(return_value);
-
 	add_index_string(return_value, FRIBIDI_CHAR_SET_UTF8,      "FRIBIDI_CHARSET_UTF8",    1);
 	add_index_string(return_value, FRIBIDI_CHAR_SET_ISO8859_6, "FRIBIDI_CHARSET_8859_6",  1);
 	add_index_string(return_value, FRIBIDI_CHAR_SET_ISO8859_8, "FRIBIDI_CHARSET_8859_8",  1);
