@@ -69,9 +69,11 @@ PHP_MINIT_FUNCTION(fribidi)
 	REGISTER_LONG_CONSTANT("FRIBIDI_CHARSET_CAP_RTL", FRIBIDI_CHAR_SET_CAP_RTL,   CONST_CS | CONST_PERSISTENT);
 
 	/* Directions */
-	REGISTER_LONG_CONSTANT("FRIBIDI_AUTO", FRIBIDI_PAR_ON,  CONST_CS | CONST_PERSISTENT);
-	REGISTER_LONG_CONSTANT("FRIBIDI_LTR",  FRIBIDI_PAR_LTR, CONST_CS | CONST_PERSISTENT);
-	REGISTER_LONG_CONSTANT("FRIBIDI_RTL",  FRIBIDI_PAR_RTL, CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("FRIBIDI_AUTO", FRIBIDI_PAR_ON,   CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("FRIBIDI_LTR",  FRIBIDI_PAR_LTR,  CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("FRIBIDI_RTL",  FRIBIDI_PAR_RTL,  CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("FRIBIDI_WLTR", FRIBIDI_PAR_WLTR, CONST_CS | CONST_PERSISTENT);
+	REGISTER_LONG_CONSTANT("FRIBIDI_WRTL", FRIBIDI_PAR_WRTL, CONST_CS | CONST_PERSISTENT);
 
 	return SUCCESS;
 }
@@ -104,10 +106,12 @@ PHP_MINFO_FUNCTION(fribidi)
 | Input: 1) The logical string.                              |
 |        2) Base direction -                                 |
 |             Possible values:                               |
-|             a) FRIBIDI_LTR  - left to right.               |
-|             b) FRIBIDI_RTL  - right to left.               |
-|             c) FRIBIDI_AUTO - autodetected by the Unicode  |
-|                               BiDi algorithm.              |
+|             FRIBIDI_AUTO - autodetected by the Unicode     |
+|                            Bidirection algorithm.          |
+|             FRIBIDI_LTR  - left to right.                  |
+|             FRIBIDI_RTL  - right to left.                  |
+|             FRIBIDI_WLTR - week left to right.             |
+|             FRIBIDI_WRTL - week right to left.             |
 |        3) Character code being used -                      |
 |             Possible values (i.e., charsets supported)     |
 |              FRIBIDI_CHARSET_UTF8                          |
@@ -141,6 +145,8 @@ PHP_FUNCTION(fribidi_log2vis)
 		case FRIBIDI_PAR_ON:
 		case FRIBIDI_PAR_LTR:
 		case FRIBIDI_PAR_RTL:
+		case FRIBIDI_PAR_WLTR:
+		case FRIBIDI_PAR_WRTL:
 			break;
 		default:
 			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown direction.");
