@@ -99,6 +99,56 @@ PHP_MINFO_FUNCTION(fribidi)
 }
 /* }}} */
 
+/* {{{ internal helper funcations
+*/
+
+static inline int
+_direction_is_validate(direction)
+{
+	switch (direction) {
+		case FRIBIDI_PAR_ON:
+		case FRIBIDI_PAR_LTR:
+		case FRIBIDI_PAR_RTL:
+		case FRIBIDI_PAR_WLTR:
+		case FRIBIDI_PAR_WRTL:
+			return TRUE;
+	}
+	return FALSE;
+}
+
+#define _validate_direction(direction) \
+{ \
+	if (!_direction_is_validate(direction)) { \
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown direction."); \
+		RETURN_FALSE; \
+	} \
+}
+
+static inline int
+_charset_is_validate(charset)
+{
+	switch (charset) {
+		case FRIBIDI_CHAR_SET_UTF8:
+		case FRIBIDI_CHAR_SET_ISO8859_6:
+		case FRIBIDI_CHAR_SET_ISO8859_8:
+		case FRIBIDI_CHAR_SET_CP1255:
+		case FRIBIDI_CHAR_SET_CP1256:
+		case FRIBIDI_CHAR_SET_CAP_RTL:
+			return TRUE;
+	}
+	return FALSE;
+}
+
+#define _validate_charset(charset) \
+{ \
+	if (!_charset_is_validate(charset)) { \
+		php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown charset."); \
+		RETURN_FALSE; \
+	} \
+}
+
+/* }}} */
+
 /*
 + -----------------------------------------------------------+
 | Name: fribidi_log2vis                                      |
@@ -140,30 +190,8 @@ PHP_FUNCTION(fribidi_log2vis)
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll", &logical_str, &logical_str_len, &direction, &charset) == FAILURE)
 		WRONG_PARAM_COUNT;
 
-	switch (direction) {
-		case FRIBIDI_PAR_ON:
-		case FRIBIDI_PAR_LTR:
-		case FRIBIDI_PAR_RTL:
-		case FRIBIDI_PAR_WLTR:
-		case FRIBIDI_PAR_WRTL:
-			break;
-		default:
-			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown direction.");
-			RETURN_FALSE;
-	}
-
-	switch (charset) {
-		case FRIBIDI_CHAR_SET_UTF8:
-		case FRIBIDI_CHAR_SET_ISO8859_6:
-		case FRIBIDI_CHAR_SET_ISO8859_8:
-		case FRIBIDI_CHAR_SET_CP1255:
-		case FRIBIDI_CHAR_SET_CP1256:
-		case FRIBIDI_CHAR_SET_CAP_RTL:
-			break;
-		default:
-			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown charset.");
-			RETURN_FALSE;
-	}
+	_validate_direction(direction);
+	_validate_charset(charset);
 
 	// Convert input string to FriBidiChar
 	logical_ustr = (FriBidiChar*) emalloc(sizeof(FriBidiChar) * logical_str_len);
@@ -201,18 +229,7 @@ PHP_FUNCTION(fribidi_charset_info)
 	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &charset) == FAILURE)
 		WRONG_PARAM_COUNT;
 
-	switch (charset) {
-		case FRIBIDI_CHAR_SET_UTF8:
-		case FRIBIDI_CHAR_SET_ISO8859_6:
-		case FRIBIDI_CHAR_SET_ISO8859_8:
-		case FRIBIDI_CHAR_SET_CP1255:
-		case FRIBIDI_CHAR_SET_CP1256:
-		case FRIBIDI_CHAR_SET_CAP_RTL:
-			break;
-		default:
-			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown charset.");
-			RETURN_FALSE;
-	}
+	_validate_charset(charset);
 
 	// Return the result
 	array_init(return_value);
