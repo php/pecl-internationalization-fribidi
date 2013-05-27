@@ -8,9 +8,9 @@ fribidi_get_charsets() and fribidi_charset_info()
 <?php
 	error_reporting(E_ALL ^ E_NOTICE);
 
+	echo FRIBIDI_CHARSET_UTF8."\n";
 	echo FRIBIDI_CHARSET_8859_8."\n";
 	echo FRIBIDI_CHARSET_8859_6."\n";
-	echo FRIBIDI_CHARSET_UTF8."\n";
 	echo FRIBIDI_CHARSET_CP1255."\n";
 	echo FRIBIDI_CHARSET_CP1256."\n";
 	echo FRIBIDI_CHARSET_CAP_RTL."\n";
@@ -19,12 +19,11 @@ fribidi_get_charsets() and fribidi_charset_info()
 	foreach ($charsets as $k => $charset) {
 		print_r(fribidi_charset_info($k));
 	}
-
 ?>
 --EXPECT--
+1
 4
 3
-1
 5
 6
 2
@@ -32,6 +31,26 @@ Array
 (
     [name] => UTF-8
     [title] => UTF-8 (Unicode)
+)
+Array
+(
+    [name] => ISO8859-6
+    [title] => ISO8859-6 (Arabic)
+)
+Array
+(
+    [name] => ISO8859-8
+    [title] => ISO8859-8 (Hebrew)
+)
+Array
+(
+    [name] => CP1255
+    [title] => CP1255 (MS Hebrew/Yiddish)
+)
+Array
+(
+    [name] => CP1256
+    [title] => CP1256 (MS Arabic)
 )
 Array
 (
@@ -91,24 +110,4 @@ Escape sequences:
     * __  `_' itself
 
 
-)
-Array
-(
-    [name] => ISO8859-6
-    [title] => ISO8859-6 (Arabic)
-)
-Array
-(
-    [name] => ISO8859-8
-    [title] => ISO8859-8 (Hebrew)
-)
-Array
-(
-    [name] => CP1255
-    [title] => CP1255 (MS Hebrew/Yiddish)
-)
-Array
-(
-    [name] => CP1256
-    [title] => CP1256 (MS Arabic)
 )
