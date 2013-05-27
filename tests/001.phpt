@@ -1,5 +1,5 @@
 --TEST--
-fribidi_log2vis
+fribidi_log2vis(), CAPT_RTL, ISO8859-8, MS-CP1255
 --SKIPIF--
 <?php if (!extension_loaded("fribidi")) print "skip"; ?>
 --POST--

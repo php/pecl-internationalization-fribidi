@@ -35,6 +35,7 @@ provides means for handling right-to-left text.
    <dir name="tests">
     <file name="001.phpt" role="test" />
     <file name="002.phpt" role="test" />
+    <file name="003.phpt" role="test" />
    </dir> <!-- //tests -->
    <file name="config.m4" role="src" />
    <file name="CREDITS" role="doc" />

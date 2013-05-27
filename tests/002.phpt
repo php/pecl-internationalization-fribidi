@@ -1,5 +1,5 @@
 --TEST--
-FriBidi charsets
+fribidi_get_charsets() and fribidi_charset_info()
 --SKIPIF--
 <?php if (!extension_loaded("fribidi")) print "skip"; ?>
 --POST--
@@ -14,7 +14,7 @@ FriBidi charsets
 	echo FRIBIDI_CHARSET_CP1255."\n";
 	echo FRIBIDI_CHARSET_CP1256."\n";
 	echo FRIBIDI_CHARSET_CAP_RTL."\n";
-	
+
 	$charsets = fribidi_get_charsets();
 	foreach ($charsets as $k => $charset) {
 		print_r(fribidi_charset_info($k));
