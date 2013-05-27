@@ -143,7 +143,7 @@ PHP_FUNCTION(fribidi_log2vis)
 		case FRIBIDI_PAR_RTL:
 			break;
 		default:
-			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown direction");
+			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown direction.");
 			RETURN_FALSE;
 	}
 
@@ -156,7 +156,7 @@ PHP_FUNCTION(fribidi_log2vis)
 		case FRIBIDI_CHAR_SET_CAP_RTL:
 			break;
 		default:
-			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown charset");
+			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown charset.");
 			RETURN_FALSE;
 	}
 
@@ -193,9 +193,9 @@ PHP_FUNCTION(fribidi_charset_info)
 	long charset;
 	char *name, *title, *desc;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &charset) == FAILURE) {
-		return;
-	}
+	// Read and validate parameters
+	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "l", &charset) == FAILURE)
+		WRONG_PARAM_COUNT;
 
 	switch (charset) {
 		case FRIBIDI_CHAR_SET_UTF8:
@@ -204,27 +204,24 @@ PHP_FUNCTION(fribidi_charset_info)
 		case FRIBIDI_CHAR_SET_CP1255:
 		case FRIBIDI_CHAR_SET_CP1256:
 		case FRIBIDI_CHAR_SET_CAP_RTL:
-			array_init(return_value);
-
-			name  = (char *)fribidi_char_set_name(charset);
-			title = (char *)fribidi_char_set_title(charset);
-			desc  = (char *)fribidi_char_set_desc(charset);
-
-			if (name) {
-				add_assoc_string_ex(return_value, "name", sizeof("name"), name, 1);
-			}
-			if (title) {
-				add_assoc_string_ex(return_value, "title", sizeof("title"), title, 1);
-			}
-			if (desc) {
-				add_assoc_string_ex(return_value, "desc", sizeof("desc"), desc, 1);
-			}
-
 			break;
 		default:
 			php_error_docref(NULL TSRMLS_CC, E_WARNING, "Unknown charset.");
 			RETURN_FALSE;
 	}
+
+	// Return the result
+	array_init(return_value);
+
+	name  = (char *)fribidi_char_set_name(charset);
+	add_assoc_string_ex(return_value, "name", sizeof("name"), name, 1);
+
+	title = (char *)fribidi_char_set_title(charset);
+	add_assoc_string_ex(return_value, "title", sizeof("title"), title, 1);
+
+	desc  = (char *)fribidi_char_set_desc(charset);
+	if (desc)
+		add_assoc_string_ex(return_value, "desc", sizeof("desc"), desc, 1);
 }
 /* }}} */
 
