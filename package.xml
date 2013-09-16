@@ -40,6 +40,7 @@
     <file name="005.phpt" role="test" />
    </dir> <!-- //tests -->
    <file name="config.m4" role="src" />
+   <file name="config.w32" role="src" />
    <file name="CREDITS" role="doc" />
    <file name="fribidi.c" role="src" />
    <file name="php_fribidi.h" role="src" />
