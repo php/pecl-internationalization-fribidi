@@ -9,6 +9,7 @@ if (PHP_FRIBIDI != "no") {
 			CHECK_LIB("fribidi.lib", "fribidi", PHP_FRIBIDI)) {
 		EXTENSION('fribidi', 'fribidi.c');
 		AC_DEFINE('HAVE_FRIBIDI', 1);
+		AC_DEFINE('DONT_HAVE_FRIBIDI_UNICODE_VERSION_H', 1);
 	} else {
 		WARNING("fribidi not enabled; libraries and headers not found");
 	}
